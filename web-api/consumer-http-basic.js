@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 require("dotenv").config();
 const server = require("express")();
 const fetch = require("node-fetch");
@@ -17,5 +18,5 @@ server.get("/", async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-	console.log(`Consumer running at http://${HOST}:${PORT}`);
+	console.log(`Consumer running at http://${HOST}:${PORT}/`);
 });

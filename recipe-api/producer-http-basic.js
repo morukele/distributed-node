@@ -10,23 +10,25 @@ console.log(`worker pid=${process.pid}`);
 server.get("/recipes/:id", async (req, res) => {
 	console.log(`worker request pid=${process.pid}`);
 	const id = Number(req.params.id);
-	if (id != 42) {
+	if (id !== 42) {
 		res.statusCode = 404;
-		res.send({ error: "not_found" });
+		res.send({
+			error: "not_found",
+		});
+	} else {
+		res.send({
+			process_pid: process.pid,
+			recipe: {
+				id,
+				name: "Chicken Tikka Masala",
+				steps: "Throw it in a pot...",
+				ingredients: [
+					{ id: 1, name: "Chicken", quantity: "1 lb" },
+					{ id: 2, name: "Sauce", quantity: "2 cups" },
+				],
+			},
+		});
 	}
-
-	res.send({
-		producer_pid: process.pid,
-		recipe: {
-			id,
-			name: "Chicken Tikka Masala",
-			steps: "Throw it in a pot...",
-			ingredients: [
-				{ id: 1, name: "Chicken", quantity: "1 lb" },
-				{ id: 2, name: "Sauce", quantity: "2 cups" },
-			],
-		},
-	});
 });
 
 server.listen(PORT, HOST, () => {
