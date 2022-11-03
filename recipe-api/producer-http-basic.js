@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-require("dotenv").config();
-const server = require("express")();
+const server = require("fastify")();
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = process.env.PORT || 4000;
 
@@ -12,23 +11,20 @@ server.get("/recipes/:id", async (req, res) => {
 	const id = Number(req.params.id);
 	if (id !== 42) {
 		res.statusCode = 404;
-		res.send({
-			error: "not_found",
-		});
-	} else {
-		res.send({
-			process_pid: process.pid,
-			recipe: {
-				id,
-				name: "Chicken Tikka Masala",
-				steps: "Throw it in a pot...",
-				ingredients: [
-					{ id: 1, name: "Chicken", quantity: "1 lb" },
-					{ id: 2, name: "Sauce", quantity: "2 cups" },
-				],
-			},
-		});
+		return { error: "not_found" };
 	}
+	return {
+		producer_id: process.pid,
+		recipe: {
+			id,
+			name: "Chicken Tikka Masala",
+			steps: "Throw it in a pot...",
+			ingredients: [
+				{ id: 1, name: "Chicken", quantity: "1 lb" },
+				{ id: 2, name: "Sauce", quantity: "2 cups" },
+			],
+		},
+	};
 });
 
 server.listen(PORT, HOST, () => {
